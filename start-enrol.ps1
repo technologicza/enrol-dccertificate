@@ -8,7 +8,7 @@ Write-Host "..enrolling for new certificate" -ForegroundColor Yellow
 $subName = ("CN = " + ([System.Net.Dns]::GetHostByName(($env:computerName))).Hostname).ToString()
 $newDCCert = Get-Certificate -SubjectName $subName -Template DomainControllerAuthenticationKerberosV2 -DnsName $dnsName1,$dnsName2,$dnsName3 -CertStoreLocation cert:\LocalMachine\My
 Write-Host "..esetting friendly name"-ForegroundColor Yellow
-(Get-ChildItem "Cert:\LocalMachine\My" | Where-Object {$_.Thumbprint -eq ($newDCCert | select -ExpandProperty Certificate).Thumbprint}).FriendlyName = "Modern Domain Controller Authentication"
+(Get-ChildItem "Cert:\LocalMachine\My" | Where-Object {$_.Thumbprint -eq ($newDCCert | Select-Object -ExpandProperty Certificate).Thumbprint}).FriendlyName = "Modern Domain Controller Authentication"
 }
 
 Else{
