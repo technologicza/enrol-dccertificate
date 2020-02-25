@@ -20,6 +20,7 @@ $dnsNamesList
 }
 
 
+$dnsNamesList = ((Get-ChildItem "Cert:\LocalMachine\My" | Where-Object {$_.Thumbprint -eq $existingDCCert.Thumbprint}).DNSNameList).unicode
 Write-Host "..testing dns names" -ForegroundColor Yellow
 foreach ($name in $dnsNamesList){
 Write-Host "$name - " -NoNewline -ForegroundColor Green
