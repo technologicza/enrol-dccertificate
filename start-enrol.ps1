@@ -1,9 +1,9 @@
 $existingDCCert = Get-ChildItem "Cert:\LocalMachine\My" | Where-Object {$_.FriendlyName -match "Modern Domain Controller Authentication"}
 $dnsName1 = (([System.Net.Dns]::GetHostByName(($env:computerName))).Hostname)
 $dnsName2 = ((([System.Net.Dns]::GetHostByName(($env:computerName))).Hostname).ToString().Split(".")[0]) 
-$dnsName3 = ((Get-NetIPAddress -AddressFamily IPv4 | where { $_.InterfaceAlias -notmatch 'Loopback'}).IPAddress)
+$dnsName3 = ((Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.InterfaceAlias -notmatch 'Loopback'}).IPAddress)
 
-if ($existingDCCert -eq $null){
+if ($null -eq $existingDCCert){
 Write-Host "..enrolling for new certificate" -ForegroundColor Yellow
 $subName = ("CN = " + ([System.Net.Dns]::GetHostByName(($env:computerName))).Hostname).ToString()
 $newDCCert = Get-Certificate -SubjectName $subName -Template DomainControllerAuthenticationKerberosV2 -DnsName $dnsName1,$dnsName2,$dnsName3 -CertStoreLocation cert:\LocalMachine\My
